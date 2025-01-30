@@ -1,5 +1,8 @@
-
 __pycache__/
+*.egg-info/
 .venv/
 stories/
-config.py
+build/
+dist/
+.DS_Store
+session.json
