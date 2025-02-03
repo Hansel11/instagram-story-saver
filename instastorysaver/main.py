@@ -1,4 +1,4 @@
-from .auth import get_credentials
+from .auth import *
 from instagrapi import Client
 from instagrapi.exceptions import LoginRequired
 import os
@@ -10,14 +10,14 @@ def login_user(username, password):
     # Setup client session and delay to avoid suspicion
     cl = Client()
     cl.delay_range = [1, 3]
-    SESSION_PATH = os.path.expanduser("~/.igsave_session.json")
+    SESSION_PATH = s = os.path.join(os.path.expanduser("~"),".igsave_session.json")
+    session_exist = os.path.exists(SESSION_PATH)
 
-    session = cl.load_settings(SESSION_PATH)
     login_via_session = False
-    login_via_pw = False
 
-    if session:
+    if session_exist:
         try:
+            session = cl.load_settings(SESSION_PATH)
             cl.set_settings(session)
             cl.login(username, password)
 
@@ -45,15 +45,14 @@ def login_user(username, password):
         try:
             print("Attempting to login via username and password. username: %s" % username)
             if cl.login(username, password):
-                login_via_pw = True
                 cl.dump_settings(SESSION_PATH)
                 print("✅ Login via passoword is successful")
 
         except Exception as e:
-            print("Couldn't login user using username and password: %s" % e)
-
-    if not login_via_pw and not login_via_session:
-        raise Exception("Couldn't login user with either password or session")
+            # print("Error message: %s" % e)
+            print("❌ Login failed. Check if your credentials are correct and try again!")
+            delete_cred()
+            quit()
 
     return cl
 
@@ -65,7 +64,6 @@ def save_story(cl, username):
     # userid = cl.user_id_from_username(username)
     print("Found user ID: "+userid)
     
-    
     # Get story count
     stories = cl.user_stories(userid)
     print("User story count: "+str(len(stories)))
@@ -75,7 +73,7 @@ def save_story(cl, username):
         storid = s.pk
         if not os.path.exists("stories"):
             os.makedirs("stories")
-        if not (os.path.isfile(f"stories/{username}_{storid}.mp4") or os.path.isfile(f"stories/{username}_{storid}.jpg")):
+        if not (os.path.exists(f"stories/{username}_{storid}.mp4") or os.path.exists(f"stories/{username}_{storid}.jpg")):
             cl.story_download(storid, f"{username}_{storid}", "./stories")
             print(f"Story {storid} successfully downloaded!")
         else:

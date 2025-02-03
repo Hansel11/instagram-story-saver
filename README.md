@@ -4,7 +4,7 @@ A simple python script to save all currently available stories based on the give
 ## Installation
 Installation is done using pip
 ```sh
-pip install igsave
+pip install instastorysaver
 ```
 
 ## Usage
@@ -29,7 +29,7 @@ Story 3556539556155674170 successfully downloaded!
 ```
 
 ## Alternate Usage
-I have also provided an alternate script made in Jupyter Notebook, which can be used with Google Colab for cloud integration.
+I have also provided an alternate script made in Jupyter Notebook, which can be used with Google Colab for cloud integration. **More details coming soon.**
 
 ## Disclaimer
 *This Project utilizes subzeroid's unofficial [Instagram API](https://github.com/subzeroid/instagrapi) and is not affiliated with Meta. Use at your own risk*

@@ -3,7 +3,7 @@ import os
 import getpass
 import argparse
 
-CRED_PATH = os.path.expanduser("~/.igsave_cred.json")
+CRED_PATH = s = os.path.join(os.path.expanduser("~"),".igsave_cred.json")
 
 def save_cred(username, password):
     # save user credentials to a JSON file.
@@ -19,7 +19,7 @@ def load_cred():
             return json.load(file)
     return None
 
-def logout():
+def delete_cred():
     # delete the stored credentials.
     if os.path.exists(CRED_PATH):
         os.remove(CRED_PATH)
@@ -41,11 +41,11 @@ def get_credentials():
     args = parser.parse_args()
     
     if args.logout:
-        logout()
+        delete_cred()
         quit()
     elif args.login:
         print("🔄 Resetting login credentials...")
-        logout()
+        delete_cred()
         username, password = prompt_for_credentials()
         save_cred(username, password)
         quit()
